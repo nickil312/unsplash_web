@@ -1,0 +1,34 @@
+{
+  "NavBar": {
+    "Explore": "Найти",
+    "Submit_an_image": "Создать фото",
+    "Login": "Войти",
+    "Sign": "Выйти"
+
+  },
+  "CategotiesSelect": {
+    "Photos": "Фото",
+    "Illustrations": "Иллюстрации",
+    "Unsplash": "Unsplash+",
+    "Wallpapers": "Обои",
+    "Nature": "Природа",
+    "Renders": "3D Рендеры",
+    "Cars": "Машины",
+    "Minimalism": "Минимализм",
+    "Monochromatic": "Монохромные",
+    "Street": "Уличная фотография",
+    "Textures": "Текстуры & Паттерны"
+  },
+  "Loginpage": {
+    "Login-title": "Вход",
+    "Welcome":"Добро пожаловать.",
+    "Sign":"Войти с помощью",
+    "OR":"Или",
+    "Email":"Почта",
+    "Password":"Пароль",
+    "Forgot-your-password":"Забыли пароль?",
+    "Login":"Войти",
+    "Dont-have-account":"Не имеете аккаунт?",
+    "Join":"Присоединиться"
+  }
+}

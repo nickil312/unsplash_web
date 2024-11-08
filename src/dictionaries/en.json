@@ -1,0 +1,33 @@
+{
+  "NavBar": {
+    "Explore": "Explore",
+    "Submit_an_image": "Submit an image",
+    "Login": "Log in",
+    "Sign": "Sign out"
+  },
+  "CategotiesSelect": {
+    "Photos": "Photos",
+    "Illustrations": "Illustrations",
+    "Unsplash": "Unsplash+",
+    "Wallpapers": "Wallpapers",
+    "Nature": "Nature",
+    "Renders": "3D Renders",
+    "Cars": "Cars",
+    "Minimalism": "Minimalism",
+    "Monochromatic": "Monochromatic",
+    "Street": "Street Photography",
+    "Textures": "Textures & Patterns"
+  },
+  "Loginpage": {
+    "Login-title": "Login",
+    "Welcome":"Welcome back.",
+    "Sign":"Sign in with",
+    "OR":"OR",
+    "Email":"Email",
+    "Password":"Password",
+    "Forgot-your-password":"Forgot your password?",
+    "Login":"Login",
+    "Dont-have-account":"Dont have account?",
+    "Join":"Join"
+  }
+}
