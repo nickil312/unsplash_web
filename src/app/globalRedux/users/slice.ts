@@ -20,7 +20,7 @@ import {RootState} from "@/app/globalRedux/store";
 import {Collections, Posts} from "@/app/globalRedux/posts/types";
 
 const initialState: UsersSliceState = {
-    // api_url: "http://172.20.10.3:4444",
+    // api_url: "http://172.20.10.2:4444",
     api_url: "http://localhost:4444",
     // api_url: "http://192.168.1.44:4444",
     // api_url: "http://192.168.1.33:4444",

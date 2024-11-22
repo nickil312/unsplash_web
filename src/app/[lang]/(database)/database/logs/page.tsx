@@ -6,6 +6,7 @@ import {fetchAllCollectionsDatabase, fetchLogsDatabase} from "@/app/globalRedux/
 import {usePathname} from "next/navigation";
 import {Collections} from "@/app/globalRedux/posts/types";
 import {Chip, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow} from "@nextui-org/react";
+// @ts-ignore
 import {Logs} from "@/app/globalRedux/posts/types";
 
 export default function Logs(){
