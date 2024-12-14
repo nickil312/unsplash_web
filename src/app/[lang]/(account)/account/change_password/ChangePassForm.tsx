@@ -1,6 +1,6 @@
 'use client'
 import {useForm} from "react-hook-form";
-import {PasswordChangeInAccountProps, PasswordChangeProps} from "@/app/globalRedux/users/types";
+import {PasswordChangeInAccountProps} from "@/app/globalRedux/users/types";
 import {useState} from "react";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "@/app/globalRedux/store";
@@ -19,10 +19,9 @@ export default function ChangePassForm() {
 
     const {
         register,
-        setValue,
         handleSubmit,
 
-        formState: {errors, isValid,},
+        formState: {errors},
 
     } = useForm<PasswordChangeInAccountProps>({
         defaultValues: {

@@ -4,15 +4,12 @@ import {AppDispatch, RootState} from "@/app/globalRedux/store";
 import {usePathname, useRouter} from "next/navigation";
 import {ChangeEvent, useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
-import {AccountEditProfile, NewUserImage, RegData} from "@/app/globalRedux/users/types";
-import {Locale} from "@/i18n.config";
+import {AccountEditProfile, NewUserImage} from "@/app/globalRedux/users/types";
 import axios from "@/app/axois";
 import {fetchChangeProfileData, fetchChangeProfileImg} from "@/app/globalRedux/users/asyncActions";
-import Link from "next/link";
 
 export default function EditProf_Form() {
     const dispatch = useDispatch<AppDispatch>();
-    const router = useRouter();
     const [error, setError] = useState(false);
     const [senderrorImage, setSendErrorImage] = useState(false);
     const [geterrorImage, setgetErrorImage] = useState(false);
@@ -31,7 +28,7 @@ export default function EditProf_Form() {
         setValue,
         handleSubmit,
         watch,
-        formState: {errors, isValid,},
+        formState: {errors},
 
     } = useForm<AccountEditProfile>({
         defaultValues: {

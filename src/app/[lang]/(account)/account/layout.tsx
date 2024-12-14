@@ -1,17 +1,5 @@
 import type {Metadata} from "next";
-import {Inter} from "next/font/google";
 import "@/app/globals.css";
-import Link from "next/link";
-import NavBar from "@/app/components/__Header/NavBar";
-import {Providers} from "@/app/globalRedux/provider";
-import BottomBar from "@/app/components/BottomBar";
-import Pagination from "@/app/components/Pagination";
-import {useDispatch, useSelector} from "react-redux";
-import {changeTheme} from "@/app/globalRedux/posts/slice";
-import {RootState} from "@/app/globalRedux/store";
-import {useSearchParams} from "next/navigation";
-import {ProvidersTheme} from "@/app/providers";
-import CategotiesSelect from "@/app/components/__Header/__SortNav/CategotiesSelect";
 import React from "react";
 import NavBar_Clear from "@/app/components/__Header/NavBar_Clear";
 import Nav from "@/app/components/account/Nav";

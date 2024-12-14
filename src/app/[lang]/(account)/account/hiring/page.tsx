@@ -1,10 +1,9 @@
 'use client'
 import {useEffect, useState} from "react";
 import {usePathname} from "next/navigation";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {fetchChangeHireData, fetchGetHireData} from "@/app/globalRedux/users/asyncActions";
-import {AppDispatch, RootState} from "@/app/globalRedux/store";
-import {Status} from "@/app/globalRedux/posts/types";
+import {AppDispatch} from "@/app/globalRedux/store";
 
 interface City {
     id: string;
