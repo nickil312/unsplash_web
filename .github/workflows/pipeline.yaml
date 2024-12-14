@@ -29,4 +29,4 @@ jobs:
 
       - name: Run ESLint
         run: |
-          npx eslint . .ts,.tsx
+          npx eslint .
