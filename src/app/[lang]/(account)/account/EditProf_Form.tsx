@@ -185,17 +185,34 @@ export default function EditProf_Form() {
                                         // src={`${api_url}/${data.avatarurl}`}
                                         src={`${userIcon ? `${userIcon}` : `${api_url}/${data.avatarurl}`}`}
                                     />
-                                    <div className="upload-circular__progress js-general-uploader-progress-target">
-                                    </div>
+                                    {/*<div className="upload-circular__progress js-general-uploader-progress-target">*/}
+                                    {/*</div>*/}
                                 </div>
                                 {/*<input title="Change profile image" type="file" onChange={handleFileChange}*/}
                                 {/*       className="settings_links_diactive text-sm"/>*/}
-                                <p
-                                    className="cursor-pointer settings_links_diactive text-sm w-[134px]">
-                                    <input type="file" onChange={handleFileChange} style={{display: 'none'}}/>
-                                    {lang === "en" ? <>Change profile image</> : <>Изменить фото акк</>}
 
+
+                                {/*<p*/}
+                                {/*    className="cursor-pointer settings_links_diactive text-sm w-[134px]">*/}
+                                {/*    <input type="file" onChange={handleFileChange} style={{display: 'none'}}/>*/}
+                                {/*    {lang === "en" ? <>Change profile image</> : <>Изменить фото акк</>}*/}
+
+                                {/*</p>*/}
+                                <p
+                                    className="cursor-pointer settings_links_diactive text-sm w-[134px]"
+                                // @ts-ignore
+                                    onClick={() => document.getElementById('fileInput').click()} // Имитация клика по input
+                                >
+                                    <input
+                                        type="file"
+                                        id="fileInput" // Уникальный ID для input
+                                        onChange={handleFileChange}
+                                        style={{display: 'none'}} // Скрываем элемент
+                                    />
+                                    {lang === "en" ? <>Change profile image</> : <>Изменить фото акк</>}
                                 </p>
+
+
                                 {/*<Link href="#" type="file" onChange={handleFileChange}*/}
                                 {/*    className=" text-sm"><p>Change profile image</p></Link>*/}
                             </div>
