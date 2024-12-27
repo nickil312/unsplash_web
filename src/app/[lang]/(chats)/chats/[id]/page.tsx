@@ -7,6 +7,7 @@ import ChatBody from "@/app/components/Chat/ChatBody";
 import axios from "@/app/chat_axios";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/globalRedux/store";
+import OldChatMessages from "@/app/components/Chat/OldChatMessages";
 
 type DetailChatsProps = {
     params: {
@@ -15,21 +16,24 @@ type DetailChatsProps = {
 }
 export type Message = {
     content: string
+    createdAt: string
     _id: string
     fullname: string
+    avatarUrl: string
     room_id: string
     type: 'recv' | 'self'
 }
-export default function ChatsDetail(params: DetailChatsProps){
+export default function ChatsDetail(params: DetailChatsProps) {
     const id = params.params.id;
     const [messages, setMessage] = useState<Array<Message>>([])
     const textarea = useRef<HTMLTextAreaElement>(null)
-    const { conn } = useContext(WebsocketContext)
-    const [users, setUsers] = useState<Array<{ fullname: string,_id:string }>>([])
+    const {conn} = useContext(WebsocketContext)
+    const [users, setUsers] = useState<Array<{ fullname: string, _id: string }>>([])
     // const { user } = useContext(AuthContext)
     const {api_url, data} = useSelector((state: RootState) => state.users);
     const pathname = usePathname()
     const lang = pathname.split('/')[1];
+    // const messagesEndRef = useRef<HTMLDivElement>(null); // Создаем ref для конца списка сообщений
 
     const router = useRouter()
 
@@ -54,7 +58,7 @@ export default function ChatsDetail(params: DetailChatsProps){
             // }
             try {
                 const res = await axios.get(`/ws/getClients/${id}`, {
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {'Content-Type': 'application/json'},
                 });
                 console.log(res.data); // Выводим данные в консоль
                 setUsers(res.data); // Устанавливаем пользователей
@@ -62,6 +66,7 @@ export default function ChatsDetail(params: DetailChatsProps){
                 console.error(e);
             }
         }
+
         getUsers()
     }, [])
 
@@ -96,7 +101,7 @@ export default function ChatsDetail(params: DetailChatsProps){
 
             // Убедитесь, что fullname присутствует в сообщении
             if (m.content === 'A new user has joined the room') {
-                setUsers((prevUsers) => [...prevUsers, { fullname: m.fullname, _id:m._id }]);
+                setUsers((prevUsers) => [...prevUsers, {fullname: m.fullname, _id: m._id}]);
             }
 
             if (m.content === 'user left the chat') {
@@ -104,18 +109,31 @@ export default function ChatsDetail(params: DetailChatsProps){
                 setMessage((prevMessages) => [...prevMessages, m]);
                 return;
             }
-            if(data !== null){
+            if (data !== null) {
 
-            // Устанавливаем тип сообщения и fullname
-            m.type = data?.fullname === m.fullname ? 'self' : 'recv';
+                // Устанавливаем тип сообщения и fullname
+                m.type = data?.fullname === m.fullname ? 'self' : 'recv';
+                const date = new Date();
+                m.createdAt = date.toISOString();
             }
             setMessage((prevMessages) => [...prevMessages, m]);
         };
 
-        conn.onclose = () => {}
-        conn.onerror = () => {}
-        conn.onopen = () => {}
+        conn.onclose = () => {
+        }
+        conn.onerror = () => {
+        }
+        conn.onopen = () => {
+        }
     }, [textarea, messages, conn, users])
+
+    // // Прокрутка вниз при обновлении сообщений
+    // useEffect(() => {
+    //     if (messagesEndRef.current) {
+    //         messagesEndRef.current.scrollIntoView({ behavior: "instant" });
+    //     }
+    // }, [messages]);
+
 
     const sendMessage = () => {
         if (!textarea.current?.value) return
@@ -123,8 +141,6 @@ export default function ChatsDetail(params: DetailChatsProps){
             router.push('/')
             return
         }
-
-
 
 
         conn.send(textarea.current.value)
@@ -145,7 +161,10 @@ export default function ChatsDetail(params: DetailChatsProps){
         <>
             <div className='flex flex-col w-full'>
                 <div className='p-4 md:mx-6 mb-14'>
-                    <ChatBody data={messages} />
+            <OldChatMessages lang={lang} id={id}/>
+                    <ChatBody data={messages} lang={lang} api_url={api_url} roomId={id}/>
+                    {/*<div ref={messagesEndRef} /> /!* Элемент для прокрутки *!/*/}
+
                 </div>
                 <div className='fixed bottom-0 mt-4 w-full'>
                     <div className='flex md:flex-row px-4 py-2 bg-grey md:mx-4 rounded-md'>
@@ -155,7 +174,7 @@ export default function ChatsDetail(params: DetailChatsProps){
                   onKeyDown={handleKeyDown} // Добавляем обработчик нажатия клавиш
                   placeholder='type your message here'
                   className='w-full h-10 p-2 rounded-md focus:outline-none'
-                  style={{ resize: 'none' }}
+                  style={{resize: 'none'}}
               />
                         </div>
                         <div className='flex items-center'>

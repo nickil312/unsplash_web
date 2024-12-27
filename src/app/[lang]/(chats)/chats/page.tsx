@@ -30,7 +30,7 @@ export default function ChatsDetail() {
         if (data !== null) {
             console.log("id есть",data._id)
             const ws = new WebSocket(
-                `ws://localhost:8080/ws/joinRoom/${roomId}?userId=${data._id}&username=${data.fullname}`
+                `ws://localhost:8080/ws/joinRoom/${roomId}?userId=${data._id}&username=${data.fullname}&avatarUrl=${data.avatarurl}`
             )
             if (ws.OPEN) {
                 setConn(ws)
@@ -69,11 +69,26 @@ export default function ChatsDetail() {
                                     <div className="flex flex-row justify-between mt-2">
 
                                         <p className="text-sm">{post.msg}</p>
-                                        <p className="text-sm">{new Intl.DateTimeFormat(`${lang}`, {
-                                            year: '2-digit',
-                                            month: '2-digit',
-                                            day: '2-digit'
-                                        }).format(new Date(post.msgCrt))}</p>
+                                        <p className="text-sm">{(() => {
+                                            const messageDate = new Date(post.msgCrt);
+                                            const today = new Date();
+
+                                            // Сравниваем только год, месяц и день
+                                            if (messageDate.getFullYear() === today.getFullYear() &&
+                                                messageDate.getMonth() === today.getMonth() &&
+                                                messageDate.getDate() === today.getDate()) {
+                                                // Если сообщение сегодня, показываем время
+                                                return messageDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                                            } else {
+                                                // Иначе показываем дату
+                                                return new Intl.DateTimeFormat(`${lang}`, {
+                                                    year: 'numeric',
+                                                    month: '2-digit',
+                                                    day: '2-digit'
+
+                                                }).format(messageDate);
+                                            }
+                                        })()}</p>
                                     </div>
                                     {/*<p>{post.msgUsId}</p>*/}
                                 </div>

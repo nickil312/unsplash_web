@@ -39,9 +39,9 @@ export default function NavBar_Clear() {
 
                         <ul>
                             <li className="navBar_mobile_display_none">
-                                <Link href="/main">
+                                <Link href={`/${lang}/chats`}>
                                     {/*Explore*/}
-                                    {lang === "en" ? <>Explore</> : <>Найти</>}
+                                    {lang === "en" ? <>Chats</> : <>Чаты</>}
                                 </Link>
                             </li>
                             <div className="bg-[#d1d1d1] h-12 w-px mr-6 navBar_mobile_display_none"></div>
