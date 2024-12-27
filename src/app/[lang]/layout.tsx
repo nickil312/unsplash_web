@@ -15,6 +15,7 @@ import {useMessages} from "next-intl";
 import {NextIntlClientProvider} from "next-intl";
 import {i18n, Locale} from "@/i18n.config";
 import {NextUIProviders} from "@/app/NextUiProvider";
+import Websocket_provider from "@/app/websocket_provider";
 
 
 export const metadata: Metadata = {
@@ -47,11 +48,14 @@ export default function RootLayout({
         <Providers>
             <ProvidersTheme>
                 <NextUIProviders>
+                    <Websocket_provider>
+
 
                 {/*<NextIntlClientProvider messages={messages}>*/}
                 {children}
                 {photos}
                 {/*</NextIntlClientProvider>*/}
+                    </Websocket_provider>
                 </NextUIProviders>
             </ProvidersTheme>
         </Providers>
