@@ -529,6 +529,10 @@ nav > ul > li > a {
     @apply
     py-2 text-sm text-[#767676] dark:text-gray-200
 }
+.chat_icon_color_change {
+    @apply
+    fill-[#767676] dark:fill-[#888888]
+}
 
 .dropdown_main_a_bg-trans {
     @apply

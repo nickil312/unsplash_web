@@ -1,5 +1,6 @@
 import {Messages} from "@/app/globalRedux/chats/types";
 import React from "react";
+import Link from "next/link";
 
 type MessageCardProps = Messages & {
     self: boolean;
@@ -37,9 +38,12 @@ export default function MessageCard({
 
         return (
             <div className={'mt-2 flex flex-row '}>
+                <Link href={`/${lang}/${_id}`} >
+
                 <img className="rounded-full w-8 h-8 "
                      src={`${api_url}/${avatarUrl}`}
                      alt="user photo"/>
+                </Link>
                 <div className="flex flex-col ml-2">
 
                     <div className='text-sm'>{fullname}</div>

@@ -1,8 +1,6 @@
 import type {Metadata} from "next";
 import React from "react";
-import NavBar_Clear from "@/app/components/__Header/NavBar_Clear";
-import Banned_Nav from "@/app/components/banned/__Nav/Banned_Nav";
-import Pagination from "@/app/components/Pagination";
+import NavBar_Chat from "@/app/components/__Header/NavBar_Chat";
 
 export const metadata: Metadata = {
     title: "Unsplash",
@@ -19,9 +17,11 @@ export default function ChatsLayout({
         <>
 
             <div className="mt-20 ">
-                <NavBar_Clear/>
+                <NavBar_Chat/>
             </div>
+            <div className="mt-10 ">
             {children}
+            </div>
 
 
         </>

@@ -8,6 +8,16 @@ export type Chats = {
     msgCrt:string,
     fullName:string,
     avatarUrl:string
+    isGroup:boolean,
+    isTechSup:boolean
+    description:string
+    chat_image:boolean
+    users:ChatUser[]
+}
+export type ChatUser = {
+    id:string
+    fullName:string,
+    avatarUrl:string
 }
 export type Messages = {
     id:string,
@@ -18,6 +28,18 @@ export type Messages = {
     _id:string,
     createdAt:string,
 }
+export type ChatChangeImageReq = {
+    chat_image:string,
+    id:string,
+}
+export type ExitReq = {
+    chatId:string
+}
+export type ChatChangeDetail = {
+    id:string,
+    name:string,
+    description:string
+}
 export type UserIdReq = {
     _id: string,
 }
@@ -25,6 +47,8 @@ export type ChatIdReq = {
     chatId: string,
 }
 export interface ChatsSliceState {
+    chat_info:Chats | null,
+    chat_detail:Chats | null,
     chatsAll: {
         items: Chats[],
         status: Status

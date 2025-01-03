@@ -161,7 +161,7 @@ export default function ChatsDetail(params: DetailChatsProps) {
         <>
             <div className='flex flex-col w-full'>
                 <div className='p-4 md:mx-6 mb-14'>
-            <OldChatMessages lang={lang} id={id}/>
+                    <OldChatMessages lang={lang} id={id}/>
                     <ChatBody data={messages} lang={lang} api_url={api_url} roomId={id}/>
                     {/*<div ref={messagesEndRef} /> /!* Элемент для прокрутки *!/*/}
 

@@ -3,10 +3,12 @@
 import {ChatsSliceState} from "@/app/globalRedux/chats/types";
 import {Status} from "@/app/globalRedux/posts/types";
 import {createSlice} from "@reduxjs/toolkit";
-import {fetchAllChats, fetchOld_Messages} from "@/app/globalRedux/chats/asyncActions";
+import {fetchAllChats, fetchChatDetail, fetchOld_Messages} from "@/app/globalRedux/chats/asyncActions";
 
 const initialState: ChatsSliceState = {
     api_url: "http://localhost:4444",
+    chat_info: null,
+    chat_detail:null,
     chatsAll: {
         items: [],
         status: Status.LOADING
@@ -14,12 +16,17 @@ const initialState: ChatsSliceState = {
     chat_old_Messages:{
         items: [],
         status: Status.LOADING
-    }
+    },
+
 }
 export const chatsSlice = createSlice({
     name: 'chats',
     initialState,
-    reducers: {},
+    reducers: {
+        saveChat_info(state,action) {
+            state.chat_info = action.payload;
+        },
+    },
     extraReducers: (builder) => {
         builder.addCase(fetchAllChats.pending, (state) => {
             state.chatsAll.status = Status.LOADING
@@ -45,7 +52,17 @@ export const chatsSlice = createSlice({
             state.chat_old_Messages.items = []
             state.chat_old_Messages.status = Status.ERROR
         });
+        builder.addCase(fetchChatDetail.pending, (state) => {
+            state.chat_detail = null
+        });
+        builder.addCase(fetchChatDetail.fulfilled, (state, action) => {
+            state.chat_detail = action.payload
+        });
+        builder.addCase(fetchChatDetail.rejected, (state) => {
+            state.chat_detail = null
+        });
     },
 })
+export const {saveChat_info} = chatsSlice.actions;
 
 export default chatsSlice.reducer;

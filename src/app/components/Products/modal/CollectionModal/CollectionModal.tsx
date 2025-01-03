@@ -339,7 +339,7 @@ export default function CollectionModal({_id, imageUrl}: CollectionModalProps) {
                             setIsActive(!isActive)
 
                         }}
-                        className="flex border-2 border-dashed border-D1 rounded-lg h-[80px] mb-3 pl-[19px] dark:border-76 bg-F5 dark:bg-12 hover:bg-EE w-full items-center transition-all duration-100 ease-in-out">
+                        className="flex border-2 border-dashed border-D1 rounded-lg h-[80px] mb-3 pl-[19px] dark:border-76 bg-F5 dark:bg-12 hover:dark:bg-1E hover:bg-EE w-full items-center transition-all duration-100 ease-in-out">
                         <p className="text-xl text-76 dark:text-D1 font-bold">{lang === "en" ? <>Create a new
                             collection</> : <>Создать новую коллекцию</>}</p>
                     </div>
