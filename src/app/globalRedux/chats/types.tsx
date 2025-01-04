@@ -51,6 +51,10 @@ export type UserIdReq = {
 export type ChatIdReq = {
     chatId: string,
 }
+export type ChatIdAndPageReq = {
+    chatId: string,
+    page: string,
+}
 export interface ChatsSliceState {
     chat_info:Chats | null,
     chat_detail:Chats | null,

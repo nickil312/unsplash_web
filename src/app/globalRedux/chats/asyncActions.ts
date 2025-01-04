@@ -4,7 +4,7 @@ import axios_node_server from "@/app/axois";
 import {
     AddUserForChat,
     ChatChangeDetail,
-    ChatChangeImageReq,
+    ChatChangeImageReq, ChatIdAndPageReq,
     ChatIdReq,
     Chats, ExitReq,
     Messages,
@@ -21,11 +21,11 @@ export const fetchAllChats = createAsyncThunk<Chats[],UserIdReq>(
         console.log('all chats', data)
         return data;
     })
-export const fetchOld_Messages = createAsyncThunk<Messages[],ChatIdReq>(
+export const fetchOld_Messages = createAsyncThunk<Messages[],ChatIdAndPageReq>(
     'chats/fetchOld_Messages', async (params) => {
 
         console.log('old messages')
-        const {data} = await axios.get<Messages[]>(`/messages/${params.chatId}`)
+        const {data} = await axios.get<Messages[]>(`/messages/${params.chatId}/${params.page}`)
         console.log('old messages', data)
         return data;
     })
