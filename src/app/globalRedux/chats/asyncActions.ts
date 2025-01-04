@@ -2,6 +2,7 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 import axios from "@/app/chat_axios";
 import axios_node_server from "@/app/axois";
 import {
+    AddUserForChat,
     ChatChangeDetail,
     ChatChangeImageReq,
     ChatIdReq,
@@ -9,6 +10,8 @@ import {
     Messages,
     UserIdReq
 } from "@/app/globalRedux/chats/types";
+import {Users} from "@/app/globalRedux/users/types";
+import {SearchAndSortParams} from "@/app/globalRedux/posts/types";
 
 export const fetchAllChats = createAsyncThunk<Chats[],UserIdReq>(
     'chats/fetchAllChats', async (params) => {
@@ -56,5 +59,31 @@ export const fetchChatExit = createAsyncThunk<Chats,ExitReq>(
         console.log('chat exit')
         const {data} = await axios_node_server.patch<Chats>(`/postgresql/chat/exit`,params)
         console.log('chat exit', data)
+        return data;
+    })
+export const fetchUsersForAdd = createAsyncThunk<Users[], SearchAndSortParams>(
+    'chats/fetchUsersForAdd',
+    async (params) => {
+        const {
+            searchtext,
+            page,
+            role_id,
+            license,
+            orientation,
+            limit,
+            sort,
+            posttype,
+        } = params
+        console.log(params)
+        const {data} = await axios_node_server.get<Users[]>(`/userpostgresql/auth/?searchtext=${searchtext}&limit=${limit}&page=${page}&search=true`)
+        console.log('fetchUsersForAdd', data)
+        return data;
+    });
+export const fetchAddUserForChat = createAsyncThunk<Chats,AddUserForChat>(
+    'chats/fetchAddUserForChat', async (params) => {
+
+        console.log('chat add user for chat')
+        const {data} = await axios_node_server.post<Chats>(`/postgresql/chat/addUser`,params)
+        console.log('chat add user for chat', data)
         return data;
     })

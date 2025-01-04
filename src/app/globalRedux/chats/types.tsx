@@ -1,4 +1,5 @@
 import {Status} from "@/app/globalRedux/posts/types";
+import {Users} from "@/app/globalRedux/users/types";
 export type Chats = {
     chatId:string,
     chatName: string,
@@ -32,6 +33,10 @@ export type ChatChangeImageReq = {
     chat_image:string,
     id:string,
 }
+export type AddUserForChat = {
+    chatId:string,
+    userId:string
+}
 export type ExitReq = {
     chatId:string
 }
@@ -57,6 +62,10 @@ export interface ChatsSliceState {
         items: Messages[],
         status: Status
     }
+    users_for_add:{
+        items: Users[],
+        status: Status
+    },
     api_url: string;
 
 }

@@ -3,7 +3,12 @@
 import {ChatsSliceState} from "@/app/globalRedux/chats/types";
 import {Status} from "@/app/globalRedux/posts/types";
 import {createSlice} from "@reduxjs/toolkit";
-import {fetchAllChats, fetchChatDetail, fetchOld_Messages} from "@/app/globalRedux/chats/asyncActions";
+import {
+    fetchAllChats,
+    fetchChatDetail,
+    fetchOld_Messages,
+    fetchUsersForAdd
+} from "@/app/globalRedux/chats/asyncActions";
 
 const initialState: ChatsSliceState = {
     api_url: "http://localhost:4444",
@@ -14,6 +19,10 @@ const initialState: ChatsSliceState = {
         status: Status.LOADING
     },
     chat_old_Messages:{
+        items: [],
+        status: Status.LOADING
+    },
+    users_for_add:{
         items: [],
         status: Status.LOADING
     },
@@ -51,6 +60,19 @@ export const chatsSlice = createSlice({
         builder.addCase(fetchOld_Messages.rejected, (state) => {
             state.chat_old_Messages.items = []
             state.chat_old_Messages.status = Status.ERROR
+        });
+        builder.addCase(fetchUsersForAdd.pending, (state) => {
+            state.users_for_add.status = Status.LOADING
+            state.users_for_add.items = []
+        });
+        builder.addCase(fetchUsersForAdd.fulfilled, (state, action) => {
+            // @ts-ignore
+            state.users_for_add.items = action.payload.posts
+            state.users_for_add.status = Status.SUCCESS
+        });
+        builder.addCase(fetchUsersForAdd.rejected, (state) => {
+            state.users_for_add.items = []
+            state.users_for_add.status = Status.ERROR
         });
         builder.addCase(fetchChatDetail.pending, (state) => {
             state.chat_detail = null
