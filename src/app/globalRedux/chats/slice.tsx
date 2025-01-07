@@ -35,6 +35,9 @@ export const chatsSlice = createSlice({
         saveChat_info(state,action) {
             state.chat_info = action.payload;
         },
+        crearChatOldMessages(state) {
+            state.chat_old_Messages.items = []
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(fetchAllChats.pending, (state) => {
@@ -85,6 +88,6 @@ export const chatsSlice = createSlice({
         });
     },
 })
-export const {saveChat_info} = chatsSlice.actions;
+export const {saveChat_info,crearChatOldMessages} = chatsSlice.actions;
 
 export default chatsSlice.reducer;

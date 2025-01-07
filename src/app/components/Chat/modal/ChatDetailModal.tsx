@@ -15,7 +15,6 @@ import axios from "@/app/axois";
 import {ChatChangeDetail, ChatChangeImageReq} from "@/app/globalRedux/chats/types";
 import {Modal, ModalBody, ModalContent, useDisclosure} from "@nextui-org/modal";
 import ChatUserAddModal from "@/app/components/Chat/modal/ChatUserAddModal";
-import {router} from "next/client";
 
 export default function ChatDetailModal({chatId}: { chatId: string }) {
     const dispatch = useDispatch<AppDispatch>();

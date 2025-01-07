@@ -19,7 +19,7 @@ export default function ChatsLayout({
             <div className="mt-20 ">
                 <NavBar_Chat/>
             </div>
-            <div className="mt-10 ">
+            <div className="mt-10">
             {children}
             </div>
 

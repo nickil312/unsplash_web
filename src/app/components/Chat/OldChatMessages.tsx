@@ -7,6 +7,7 @@ import {fetchOld_Messages} from "@/app/globalRedux/chats/asyncActions";
 import {Messages} from "@/app/globalRedux/chats/types";
 import MessageCard from "@/app/components/Chat/MessageCard";
 import {Status} from "@/app/globalRedux/posts/types";
+import {crearChatOldMessages} from "@/app/globalRedux/chats/slice";
 
 export default function OldChatMessages({lang, id}: { lang: string, id: string }) {
     const dispatch = useDispatch<AppDispatch>();
@@ -29,30 +30,44 @@ export default function OldChatMessages({lang, id}: { lang: string, id: string }
                 page: page.toString()
             }))
         }
+
         console.log(page)
     }, [data, page]);
 
-    useEffect(() => {
-        // Обновляем состояние allMessages при изменении items, если items не пустой и является массивом
-        if (Array.isArray(items) && items.length > 0) {
-            setAllMessages((prevMessages) => {
-                // Проверяем, чтобы избежать дублирования
-                const newMessages = items.filter(item => !prevMessages.some(prev => prev.id === item.id));
-                return [...newMessages, ...prevMessages];
-            });
-
-        }
-
-    }, [items]);
-    // const handleScroll = () => {
-    //     if (messagesEndRef.current) {
-    //         const {scrollTop} = messagesEndRef.current;
-    //         if (scrollTop === 0) { // Если прокрутка достигла верхнего края
-    //             console.log("Reached the top, loading more messages...");
-    //             setPage((prevPage) => prevPage + 1); // Увеличиваем номер страницы
-    //         }
+    // useEffect(() => {
+    //     // Обновляем состояние allMessages при изменении items, если items не пустой и является массивом
+    //     if (items !== null && Array.isArray(items) && items.length > 0) {
+    //         setAllMessages((prevMessages) => {
+    //             // Проверяем, чтобы избежать дублирования
+    //             const newMessages = items.filter(item => !prevMessages.some(prev => prev.id === item.id));
+    //             return [...newMessages, ...prevMessages];
+    //         });
+    //
     //     }
-    // };
+    //
+    // }, [items]);
+    useEffect(() => {
+        console.log(items)
+        if (items === null && status === Status.SUCCESS){
+            dispatch(crearChatOldMessages());
+        } else {
+            // Обновляем состояние allMessages при изменении items, если items не пустой и является массивом
+            if (items !== null && Array.isArray(items) && items.length > 0) {
+                // Проверяем, если roomId первого элемента не равен id
+                if (items[0].roomId !== id) {
+                    dispatch(crearChatOldMessages());
+
+                } else {
+
+                    setAllMessages((prevMessages) => {
+                        // Проверяем, чтобы избежать дублирования
+                        const newMessages = items.filter(item => !prevMessages.some(prev => prev.id === item.id));
+                        return [...newMessages, ...prevMessages];
+                    });
+                }
+            }
+        }
+    }, [items, id]);
     const handleScroll = () => {
         if (messagesEndRef.current) {
             const {scrollTop} = messagesEndRef.current;
@@ -109,47 +124,102 @@ export default function OldChatMessages({lang, id}: { lang: string, id: string }
         }
     }, [page]);
 
+    // return (
+    //
+    //
+    //     // <div ref={messagesEndRef}
+    //     //
+    //     //      style={{overflowY: 'auto', maxHeight: '400px'}}> {/* Установите максимальную высоту и прокрутку */}
+    //     <div
+    //         ref={messagesEndRef}
+    //         style={{overflowY: "auto", maxHeight: '100vh', flexGrow: 1}} // Установите максимальную высоту и прокрутку
+    //         onScroll={handleScroll} // Добавьте обработчик прокрутки
+    //     >
+    //         {allMessages && allMessages.length > 0 ? (
+    //
+    //             allMessages.map((message: Messages) => {
+    //                 if (data !== null && message._id === data._id) {
+    //                     return (
+    //
+    //                         <MessageCard id={message.id} _id={message._id} lang={lang}
+    //                                      self={true} content={message.content}
+    //                                      fullname={message.fullname}
+    //                                      createdAt={message.createdAt}
+    //                                      avatarUrl={message.avatarUrl}
+    //                                      roomId={message.roomId}
+    //                                      api_url={api_url}/>
+    //                     )
+    //                 } else {
+    //                     return (
+    //                         <MessageCard id={message.id} _id={message._id} lang={lang}
+    //                                      self={false} content={message.content}
+    //                                      fullname={message.fullname}
+    //                                      createdAt={message.createdAt}
+    //                                      avatarUrl={message.avatarUrl}
+    //                                      roomId={message.roomId}
+    //                                      api_url={api_url}/>
+    //                     );
+    //                 }
+    //             })) : (
+    //             items === null ? (
+    //                 <div style={{textAlign: 'center', padding: '20px'}}>Сообщений нет</div> // Сообщение о том, что сообщений нет
+    //             ) : (
+    //                 <div style={{textAlign: 'center', padding: '20px'}}>Загрузка...</div> // Текст загрузки
+    //             ))
+    //         }
+    //     </div>
+    //
+    // )
     return (
-
-
-        // <div ref={messagesEndRef}
-        //
-        //      style={{overflowY: 'auto', maxHeight: '400px'}}> {/* Установите максимальную высоту и прокрутку */}
         <div
             ref={messagesEndRef}
-            style={{overflowY: "auto", maxHeight: '100vh', flexGrow: 1}} // Установите максимальную высоту и прокрутку
+            style={{ overflowY: "auto", maxHeight: '100vh', flexGrow: 1 }} // Установите максимальную высоту и прокрутку
             onScroll={handleScroll} // Добавьте обработчик прокрутки
         >
-            {allMessages && allMessages.length > 0 ? (
-
+            {status === Status.LOADING ? (
+                <div style={{ textAlign: 'center', padding: '20px' }}>Загрузка...</div> // Сообщение о загрузке
+            ) : status === Status.ERROR ? (
+                <div style={{ textAlign: 'center', padding: '20px', color: 'red' }}>Произошла ошибка при загрузке сообщений.</div> // Сообщение об ошибке
+            ) : status === Status.SUCCESS && (items === null || items.length === 0 && allMessages && allMessages.length < 0) ? (
+                <div style={{ textAlign: 'center', padding: '20px' }}>Сообщений нет</div> // Сообщение о том, что сообщений нет
+            ) : allMessages && allMessages.length > 0 ? (
                 allMessages.map((message: Messages) => {
                     if (data !== null && message._id === data._id) {
                         return (
-
-                            <MessageCard id={message.id} _id={message._id} lang={lang}
-                                         self={true} content={message.content}
-                                         fullname={message.fullname}
-                                         createdAt={message.createdAt}
-                                         avatarUrl={message.avatarUrl}
-                                         roomId={message.roomId}
-                                         api_url={api_url}/>
-                        )
+                            <MessageCard
+                                key={message._id} // Добавьте уникальный ключ для каждого элемента
+                                id={message.id}
+                                _id={message._id}
+                                lang={lang}
+                                self={true}
+                                content={message.content}
+                                fullname={message.fullname}
+                                createdAt={message.createdAt}
+                                avatarUrl={message.avatarUrl}
+                                roomId={message.roomId}
+                                api_url={api_url}
+                            />
+                        );
                     } else {
                         return (
-                            <MessageCard id={message.id} _id={message._id} lang={lang}
-                                         self={false} content={message.content}
-                                         fullname={message.fullname}
-                                         createdAt={message.createdAt}
-                                         avatarUrl={message.avatarUrl}
-                                         roomId={message.roomId}
-                                         api_url={api_url}/>
+                            <MessageCard
+                                key={message._id} // Добавьте уникальный ключ для каждого элемента
+                                id={message.id}
+                                _id={message._id}
+                                lang={lang}
+                                self={false}
+                                content={message.content}
+                                fullname={message.fullname}
+                                createdAt={message.createdAt}
+                                avatarUrl={message.avatarUrl}
+                                roomId={message.roomId}
+                                api_url={api_url}
+                            />
                         );
                     }
-                })) : (
-                <div style={{textAlign: 'center', padding: '20px'}}>Загрузка...</div> // Текст загрузки
-            )
-            }
+                })
+            ) : (
+                <div style={{ textAlign: 'center', padding: '20px' }}>Неизвестный статус</div> // Сообщение для неизвестного статуса
+            )}
         </div>
-
-    )
-}
+    );}

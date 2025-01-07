@@ -5,9 +5,10 @@ import {usePathname, useRouter} from "next/navigation";
 import ChatBody from "@/app/components/Chat/ChatBody";
 // import autosize from 'autosize'
 import axios from "@/app/chat_axios";
-import {useSelector} from "react-redux";
-import {RootState} from "@/app/globalRedux/store";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "@/app/globalRedux/store";
 import OldChatMessages from "@/app/components/Chat/OldChatMessages";
+import {crearChatOldMessages} from "@/app/globalRedux/chats/slice";
 
 type DetailChatsProps = {
     params: {
@@ -34,6 +35,7 @@ export default function ChatsDetail(params: DetailChatsProps) {
     const pathname = usePathname()
     const lang = pathname.split('/')[1];
     // const messagesEndRef = useRef<HTMLDivElement>(null); // Создаем ref для конца списка сообщений
+    const dispatch = useDispatch<AppDispatch>();
 
     const router = useRouter()
 
@@ -132,12 +134,11 @@ export default function ChatsDetail(params: DetailChatsProps) {
 
     return (
 
-        // <div className='flex flex-col w-full'>
         <div className='flex flex-col w-full '> {/* Установите высоту на 100% экрана */}
-            <div className='p-4 md:mx-6 mb-14 flex-grow'> {/* Используйте flex-grow для заполнения оставшегося пространства */}
+                <div className='p-4 md:mx-6 pb-14 pt-8 '> {/* Используйте flex-grow для заполнения оставшегося пространства */}
+                <OldChatMessages lang={lang} id={id}/>
 
                 {/*<div className='p-4 md:mx-6 mb-14'>*/}
-                <OldChatMessages lang={lang} id={id}/>
                 <ChatBody data={messages} lang={lang} api_url={api_url} roomId={id}/>
                 {/*<div ref={messagesEndRef} /> /!* Элемент для прокрутки *!/*/}
 
@@ -164,6 +165,5 @@ export default function ChatsDetail(params: DetailChatsProps) {
                 </div>
             </div>
         </div>
-
     )
 }

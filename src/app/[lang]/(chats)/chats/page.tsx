@@ -7,7 +7,7 @@ import {Status} from "@/app/globalRedux/posts/types";
 import PostsLoading from "@/app/components/__Loading/PostsLoading";
 import {usePathname, useRouter} from "next/navigation";
 import {WebsocketContext} from "@/app/websocket_provider";
-import {saveChat_info} from "@/app/globalRedux/chats/slice";
+import {crearChatOldMessages, saveChat_info} from "@/app/globalRedux/chats/slice";
 
 export default function ChatsDetail() {
     const dispatch = useDispatch<AppDispatch>();
@@ -24,6 +24,8 @@ export default function ChatsDetail() {
             dispatch(fetchAllChats({
                 _id: data._id
             }))
+            dispatch(crearChatOldMessages());
+
         }
     }, [data]);
 
@@ -126,42 +128,53 @@ export default function ChatsDetail() {
                                             }
                                         </div>
                                     </div>
-                                    <p className="font-bold">{post.isGroup}</p>
-                                    <p className="font-bold">{post.isTechSup}</p>
+                                    {/*<p className="font-bold">{post.isGroup}</p>*/}
+                                    {/*<p className="font-bold">{post.isTechSup}</p>*/}
                                     <div className="flex flex-row mt-1 justify-start items-center">
-
-                                        <img className="rounded-full w-8 h-8 hidden md:block"
-                                            // src="https://images.unsplash.com/profile-1709797368653-c9a3d3c2bf26?fm=jpg&amp;q=60&amp;w=3000&amp;ixlib=rb-4.0.3&amp;crop=faces&amp;fit=crop&amp;h=32"
-                                             src={`${api_url}/${post.avatarUrl}`}
-                                             alt="user photo"/>
-                                        <p className="text-sm md:ml-2">{post.fullName}</p>
+                                        {
+                                            (post.avatarUrl !== "" && post.avatarUrl !== "") && (
+                                                <>
+                                                    <img className="rounded-full w-8 h-8 hidden md:block"
+                                                        // src="https://images.unsplash.com/profile-1709797368653-c9a3d3c2bf26?fm=jpg&amp;q=60&amp;w=3000&amp;ixlib=rb-4.0.3&amp;crop=faces&amp;fit=crop&amp;h=32"
+                                                         src={`${api_url}/${post.avatarUrl}`}
+                                                         alt="user photo"/>
+                                                    <p className="text-sm md:ml-2">{post.fullName}</p>
+                                                </>
+                                            )
+                                        }
                                     </div>
                                     <div className="flex flex-row justify-between mt-2">
+                                        {
+                                            (post.msg !== "" && post.msgCrt !== "" && post.msgUsId !== "") && (
+                                                <>
 
-                                        <p className="text-sm">{post.msg}</p>
-                                        <p className="text-sm">{(() => {
-                                            const messageDate = new Date(post.msgCrt);
-                                            const today = new Date();
+                                                    <p className="text-sm">{post.msg}</p>
+                                                    <p className="text-sm">{(() => {
+                                                        const messageDate = new Date(post.msgCrt);
+                                                        const today = new Date();
 
-                                            // Сравниваем только год, месяц и день
-                                            if (messageDate.getFullYear() === today.getFullYear() &&
-                                                messageDate.getMonth() === today.getMonth() &&
-                                                messageDate.getDate() === today.getDate()) {
-                                                // Если сообщение сегодня, показываем время
-                                                return messageDate.toLocaleTimeString([], {
-                                                    hour: '2-digit',
-                                                    minute: '2-digit'
-                                                });
-                                            } else {
-                                                // Иначе показываем дату
-                                                return new Intl.DateTimeFormat(`${lang}`, {
-                                                    year: 'numeric',
-                                                    month: '2-digit',
-                                                    day: '2-digit'
+                                                        // Сравниваем только год, месяц и день
+                                                        if (messageDate.getFullYear() === today.getFullYear() &&
+                                                            messageDate.getMonth() === today.getMonth() &&
+                                                            messageDate.getDate() === today.getDate()) {
+                                                            // Если сообщение сегодня, показываем время
+                                                            return messageDate.toLocaleTimeString([], {
+                                                                hour: '2-digit',
+                                                                minute: '2-digit'
+                                                            });
+                                                        } else {
+                                                            // Иначе показываем дату
+                                                            return new Intl.DateTimeFormat(`${lang}`, {
+                                                                year: 'numeric',
+                                                                month: '2-digit',
+                                                                day: '2-digit'
 
-                                                }).format(messageDate);
-                                            }
-                                        })()}</p>
+                                                            }).format(messageDate);
+                                                        }
+                                                    })()}</p>
+                                                </>
+                                            )
+                                        }
                                     </div>
                                     {/*<p>{post.msgUsId}</p>*/}
                                 </div>

@@ -4,7 +4,7 @@ import axios_node_server from "@/app/axois";
 import {
     AddUserForChat,
     ChatChangeDetail,
-    ChatChangeImageReq, ChatIdAndPageReq,
+    ChatChangeImageReq, ChatCreateForm, ChatIdAndPageReq,
     ChatIdReq,
     Chats, ExitReq,
     Messages,
@@ -85,5 +85,13 @@ export const fetchAddUserForChat = createAsyncThunk<Chats,AddUserForChat>(
         console.log('chat add user for chat')
         const {data} = await axios_node_server.post<Chats>(`/postgresql/chat/addUser`,params)
         console.log('chat add user for chat', data)
+        return data;
+    })
+export const fetchCreateChat = createAsyncThunk<Chats,ChatCreateForm>(
+    'chats/fetchCreateChat', async (params) => {
+
+        console.log('chat create')
+        const {data} = await axios_node_server.post<Chats>(`/postgresql/chat/create`,params)
+        console.log('chat create', data)
         return data;
     })

@@ -20,6 +20,16 @@ export type ChatUser = {
     fullName:string,
     avatarUrl:string
 }
+export type ChatCreateForm = {
+    chatName: string,
+    isGroup:boolean,
+    isTechSup:boolean
+    description:string
+    chat_image:string
+    _id:string,
+    userId:string
+
+}
 export type Messages = {
     id:string,
     content:string,

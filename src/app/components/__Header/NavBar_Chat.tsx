@@ -15,6 +15,10 @@ import {getDictionary} from "@/lib/dictionary";
 import {usePathname} from "next/navigation";
 import CategotiesSelect from "@/app/components/__Header/__SortNav/CategotiesSelect";
 import NavBar_Chat_bottom from "@/app/components/Chat/NavBar___Chat_bottom";
+import {Modal, ModalBody, ModalContent} from "@nextui-org/modal";
+import ChatDetailModal from "@/app/components/Chat/modal/ChatDetailModal";
+import {router} from "next/client";
+import NavBarAllChats_bottom from "@/app/components/Chat/NavBar__AllChats_bottom";
 
 
 export default  function NavBar_Chat() {
@@ -60,7 +64,14 @@ export default  function NavBar_Chat() {
 
                     </nav>
                 </div>
+                {
+                    pathname === `/${lang}/chats` ? (
+                        <NavBarAllChats_bottom lang={lang}/>
+                    ) : (
+
                 <NavBar_Chat_bottom/>
+                    )
+                }
                 {/*<BDSelect lang={lang}/>*/}
                 {/*<CategotiesSelect lang={lang}/>*/}
                 {/*<BottomBar/>*/}

@@ -42,7 +42,7 @@ export default function ChatUserAddModal() {
                     posttype: '',
                     orientation: '',
                     license: '',
-                    limit: searchParams.get("countview"),
+                    limit: '',
                     sort: ''
                 }))
             }
@@ -64,7 +64,7 @@ export default function ChatUserAddModal() {
             posttype: '',
             orientation: '',
             license: '',
-            limit: searchParams.get("countview"),
+            limit: '',
             sort: ''
         }))
 
