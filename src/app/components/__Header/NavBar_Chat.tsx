@@ -19,6 +19,8 @@ import {Modal, ModalBody, ModalContent} from "@nextui-org/modal";
 import ChatDetailModal from "@/app/components/Chat/modal/ChatDetailModal";
 import {router} from "next/client";
 import NavBarAllChats_bottom from "@/app/components/Chat/NavBar__AllChats_bottom";
+import {useSelector} from "react-redux";
+import {RootState} from "@/app/globalRedux/store";
 
 
 export default  function NavBar_Chat() {
@@ -26,6 +28,7 @@ export default  function NavBar_Chat() {
     // console.log("lang",lang)
     const pathname = usePathname()
     const lang = pathname.split('/')[1] as "en" | "ru";
+    const {data} = useSelector((state: RootState) => state.users);
 
     return (
         <nav>
@@ -44,10 +47,15 @@ export default  function NavBar_Chat() {
 
                         <ul>
                             <li className="navBar_mobile_display_none">
-                                <Link href={`/${lang}/chats`}>
-                                    {/*Explore*/}
-                                    {lang === "en" ? <>Chats</> : <>Чаты</>}
-                                </Link>
+                                {
+                                    data !== null && (
+
+                                        <Link href={`/${lang}/chats`}>
+                                            {/*Explore*/}
+                                            {lang === "en" ? <>Chats</> : <>Чаты</>}
+                                        </Link>
+                                    )
+                                }
                             </li>
                             <div className="bg-[#d1d1d1] h-12 w-px mr-6 navBar_mobile_display_none"></div>
                             <li className="navBar_mobile_display_none">

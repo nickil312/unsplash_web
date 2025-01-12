@@ -14,6 +14,8 @@ import {Locale} from "@/i18n.config";
 import {getDictionary} from "@/lib/dictionary";
 import {usePathname} from "next/navigation";
 import CategotiesSelect from "@/app/components/__Header/__SortNav/CategotiesSelect";
+import {useSelector} from "react-redux";
+import {RootState} from "@/app/globalRedux/store";
 
 
 export default function NavBar_Clear() {
@@ -21,6 +23,7 @@ export default function NavBar_Clear() {
     // console.log("lang",lang)
     const pathname = usePathname()
     const lang = pathname.split('/')[1] as "en" | "ru";
+    const {data} = useSelector((state: RootState) => state.users);
 
     return (
         <nav>
@@ -39,10 +42,15 @@ export default function NavBar_Clear() {
 
                         <ul>
                             <li className="navBar_mobile_display_none">
-                                <Link href={`/${lang}/chats`}>
-                                    {/*Explore*/}
-                                    {lang === "en" ? <>Chats</> : <>Чаты</>}
-                                </Link>
+                                {
+                                    data !== null && (
+
+                                        <Link href={`/${lang}/chats`}>
+                                            {/*Explore*/}
+                                            {lang === "en" ? <>Chats</> : <>Чаты</>}
+                                        </Link>
+                                    )
+                                }
                             </li>
                             <div className="bg-[#d1d1d1] h-12 w-px mr-6 navBar_mobile_display_none"></div>
                             <li className="navBar_mobile_display_none">

@@ -180,7 +180,7 @@ export default function OldChatMessages({lang, id}: { lang: string, id: string }
                 <div style={{ textAlign: 'center', padding: '20px' }}>Загрузка...</div> // Сообщение о загрузке
             ) : status === Status.ERROR ? (
                 <div style={{ textAlign: 'center', padding: '20px', color: 'red' }}>Произошла ошибка при загрузке сообщений.</div> // Сообщение об ошибке
-            ) : status === Status.SUCCESS && (items === null || items.length === 0 && allMessages && allMessages.length < 0) ? (
+            ) : status === Status.SUCCESS && (items === null || items.length === 0 && allMessages === null || allMessages.length === 0) ? (
                 <div style={{ textAlign: 'center', padding: '20px' }}>Сообщений нет</div> // Сообщение о том, что сообщений нет
             ) : allMessages && allMessages.length > 0 ? (
                 allMessages.map((message: Messages) => {

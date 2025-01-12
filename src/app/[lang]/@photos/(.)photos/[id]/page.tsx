@@ -22,6 +22,7 @@ import {useForm} from "react-hook-form";
 import {FormData} from "@/app/[lang]/(photos & illustrations)/photos/create/CreateForm";
 import CollectionModal from "@/app/components/Products/modal/CollectionModal/CollectionModal";
 import ReportModal from "@/app/components/Products/modal/ReportModal/ReportModal";
+import {fetchCreateChat} from "@/app/globalRedux/chats/asyncActions";
 
 type DetailPostInfoProps = {
     params: {
@@ -773,9 +774,60 @@ export default function DetailPostInfoModal(params: DetailPostInfoProps) {
 
                                     {
                                         items.banned && (
-                                            <p className="text-red-500 mb-2">{lang === "en" ? <>Post banned:
-                                                {items.reasonofban}
-                                            </> : <>Запись заблокирована: {items.reasonofban} </>}</p>
+                                            <>
+                                                <p className="text-red-500 mb-2">{lang === "en" ? <>Post banned:
+                                                    {items.reasonofban}
+                                                </> : <>Запись заблокирована: {items.reasonofban} </>}</p>
+                                                {
+                                                    data !== null && (data.user_role_id === 1 || data.user_role_id === 3) ? (
+                                                        <></>
+                                                    ) : data !== null && data.user_role_id === 2 ? (
+                                                        <button type="button"
+                                                                className="modal_buttons fill-red-500 text-red-500 "
+                                                                onClick={() => {
+                                                                    if (data !== null && items?.admin_id) {
+                                                                        if (id !== data._id) {
+                                                                            dispatch(fetchCreateChat({
+                                                                                _id: data._id,
+                                                                                userId: items.admin_id,
+                                                                                chatName: "Tech support chat",
+                                                                                isTechSup: true,
+                                                                                description: `Tech support chat about post - ${items.title} `,
+                                                                                chat_image: "",
+                                                                                isGroup: false
+                                                                            }))
+                                                                            router.push(`/${lang}/chats`);
+
+                                                                        }
+                                                                    }
+                                                                }}
+                                                                title="Add this image to a collection">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14"
+                                                                 id="Warning-Circle--Streamline-Core" height="13"
+                                                                 width="13">
+                                                                <g>
+
+                                                                    <path id="Subtract" className="fill-red-500"
+                                                                          fill-rule="evenodd"
+                                                                          d="M7 14c3.866 0 7 -3.134 7 -7 0 -3.86599 -3.134 -7 -7 -7 -3.86599 0 -7 3.13401 -7 7 0 3.866 3.13401 7 7 7ZM7 3.125c0.41421 0 0.75 0.33579 0.75 0.75v3.25c0 0.41421 -0.33579 0.75 -0.75 0.75s-0.75 -0.33579 -0.75 -0.75v-3.25c0 -0.41421 0.33579 -0.75 0.75 -0.75Zm1 6.75c0 0.5523 -0.44772 1 -1 1s-1 -0.4477 -1 -1c0 -0.55228 0.44772 -1 1 -1s1 0.44772 1 1Z"
+                                                                          clip-rule="evenodd" stroke-width="1">
+
+                                                                    </path>
+                                                                </g>
+                                                            </svg>
+                                                            <span
+                                                                className="ml-1 text-red-500 navBar_mobile_display_none">
+                                            {lang === "en" ? <>Write tech support</> : <>Написать тех. поддержке</>}
+
+                                        </span>
+                                                        </button>
+                                                    ) : (
+                                                        <></>
+                                                    )
+
+                                                }
+
+                                            </>
                                         )
                                     }
                                     {

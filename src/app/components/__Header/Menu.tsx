@@ -12,7 +12,7 @@ export default function Menu() {
     const [menu, setMenu] = useState(false);
     const [menuLanguage, setMenuLanguage] = useState(false);
     const [selectedmenuLanguage, setSelectedMenuLanguage] = useState(0);
-    const {data, api_url} = useSelector((state: RootState) => (state.users))
+    const {data} = useSelector((state: RootState) => (state.users))
 
     const pathname = usePathname()
     const searchParams = useSearchParams()
@@ -108,10 +108,10 @@ export default function Menu() {
                     //                 out</a>
                     //         </div>
                     //     </div>
-                    <div  className="z-20 relative   md:block md:w-auto" id="navbar-dropdown">
+                    <div className="z-20 relative   md:block md:w-auto" id="navbar-dropdown">
 
                         <div id="dropdownNavbar"
-                             // style={{zIndex:"12"}}
+                            // style={{zIndex:"12"}}
                              className="menu_adaptive dropdown_main_div">
                             <div
                                 className="flex flex-row justify-between  navBar_mobile_display_none pt-6 pl-6 pr-8 pb-8">
@@ -180,7 +180,8 @@ export default function Menu() {
 
                                             <li>
                                                 <Link href={`/${languagePrefix}/database`}
-                                                   className="user_dropdown_a dropdown_main_a_bg-trans">{languagePrefix === "en" ? <>Database</> : <>База данных</>}</Link>
+                                                      className="user_dropdown_a dropdown_main_a_bg-trans">{languagePrefix === "en" ? <>Database</> : <>База
+                                                    данных</>}</Link>
                                             </li>
                                         )
                                     }
@@ -219,13 +220,13 @@ export default function Menu() {
 
                                             <li>
                                                 <Link href={`/${languagePrefix}/banned`}
-                                                   className="user_dropdown_a dropdown_main_a_bg-trans">{languagePrefix === "en" ? <>Banned
+                                                      className="user_dropdown_a dropdown_main_a_bg-trans">{languagePrefix === "en" ? <>Banned
                                                     posts</> : <>Заблок. посты</>}</Link>
                                             </li>
                                         )
                                     }
                                     {
-                                        data !== null && (data.user_role_id === 1 || data.user_role_id === 3)  && (
+                                        data !== null && (data.user_role_id === 1 || data.user_role_id === 3) && (
 
                                             <li>
                                                 <Link href={`/${languagePrefix}/banned`}
@@ -332,7 +333,8 @@ export default function Menu() {
 
                                                     <li>
                                                         <Link href={`/${languagePrefix}/database`}
-                                                           className="user_dropdown_a dropdown_main_a_bg-trans">{languagePrefix === "en" ? <>Database</> : <>База данных</>}</Link>
+                                                              className="user_dropdown_a dropdown_main_a_bg-trans">{languagePrefix === "en" ? <>Database</> : <>База
+                                                            данных</>}</Link>
                                                     </li>
                                                 )
                                             }
@@ -379,6 +381,19 @@ export default function Menu() {
                                                 </Link>
                                             </li>
                                             {
+                                                data !== null && (
+                                                    <li>
+
+
+                                                        <Link href={`/${languagePrefix}/chats`}
+                                                              className="user_dropdown_a dropdown_main_a_bg-trans">
+                                                            {/*Explore*/}
+                                                            {languagePrefix === "en" ? <>Chats</> : <>Чаты</>}
+                                                        </Link>
+                                                    </li>
+                                                )
+                                            }
+                                            {
                                                 data !== null && data.user_role_id === 2 && (
 
                                                     <li>
@@ -390,7 +405,7 @@ export default function Menu() {
                                                 )
                                             }
                                             {
-                                                data !== null &&(data.user_role_id === 1 || data.user_role_id === 3) && (
+                                                data !== null && (data.user_role_id === 1 || data.user_role_id === 3) && (
 
                                                     <li>
                                                         <Link href={`/${languagePrefix}/banned`}

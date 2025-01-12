@@ -32,7 +32,9 @@ export default function ChatGroupCreateModal({lang}: { lang: string }) {
         formState: {errors, isValid},
 
     } = useForm<ChatCreateForm>({
-        defaultValues: {},
+        defaultValues: {
+            isTechSup:false
+        },
     });
 
     const onSubmit = handleSubmit((values) => {
@@ -65,7 +67,7 @@ export default function ChatGroupCreateModal({lang}: { lang: string }) {
                     console.log(error)
                     // setSendDataChange(true);
                 })
-        }else {
+        } else {
             console.log("data null!")
             router.push(`/${lang}/login`);
 
@@ -273,17 +275,24 @@ export default function ChatGroupCreateModal({lang}: { lang: string }) {
                     </div>
 
                 )}
-                <div className="flex flex-col gap-2 mb-4 items-start">
-                    <Switch
-                        defaultSelected
-                        onValueChange={(value) => setValue('isTechSup', value)} // Update the posttype field when the switch is toggled
-                        {...register('isTechSup')}
-                    >
-                        {lang === "en" ? <>Технический чат.</> : <>Technical chat.</>}
-                    </Switch>
-                    <p className="text-small text-default-500">{lang === "en" ? <>Creating a chat with technical
-                        support.</> : <>Создание чата с тех. поддержкой.</>}</p>
-                </div>
+                {
+                    data !== null && (data.user_role_id === 1 || data.user_role_id === 3) ? (
+
+                        <div className="flex flex-col gap-2 mb-4 items-start">
+                            <Switch
+                                defaultSelected={false}
+                                onValueChange={(value) => setValue('isTechSup', value)} // Update the posttype field when the switch is toggled
+                                {...register('isTechSup')}
+                            >
+                                {lang === "en" ? <>Технический чат.</> : <>Technical chat.</>}
+                            </Switch>
+                            <p className="text-small text-default-500">{lang === "en" ? <>Creating a chat with technical
+                                support.</> : <>Создание чата с тех. поддержкой.</>}</p>
+                        </div>
+                    ) :(
+                        <></>
+                    )
+                }
 
 
                 <button type="submit"

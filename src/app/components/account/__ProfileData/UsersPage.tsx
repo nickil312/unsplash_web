@@ -3,9 +3,10 @@ import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/app/globalRedux/store";
 import {fetchGetUserDataAndDataAnotherUser} from "@/app/globalRedux/users/asyncActions";
-import {usePathname} from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 import {Cities, work} from "@/app/[lang]/(account)/account/hiring/page";
 import ToggleBD from "@/app/components/account/__Nav/ToggleBD";
+import {fetchCreateChat} from "@/app/globalRedux/chats/asyncActions";
 
 type DetailUsersProps = {
     params: {
@@ -20,6 +21,8 @@ export default function UsersPage(params: DetailUsersProps) {
     const {api_url, data} = useSelector((state: RootState) => state.users);
     const pathname = usePathname()
     const lang = pathname.split('/')[1];
+    const router = useRouter();
+
     useEffect(() => {
 
         dispatch(fetchGetUserDataAndDataAnotherUser({
@@ -60,6 +63,23 @@ export default function UsersPage(params: DetailUsersProps) {
                                         {
                                             ((items.messages !== null) && items.messages) && (
                                                 <div
+                                                    onClick={() => {
+                                                        if (data !== null) {
+                                                            if (id !== data._id) {
+                                                                dispatch(fetchCreateChat({
+                                                                    _id: data._id,
+                                                                    userId: id,
+                                                                    chatName: "",
+                                                                    isTechSup: false,
+                                                                    description: "",
+                                                                    chat_image: "",
+                                                                    isGroup: false
+                                                                }))
+                                                                router.push(`/${lang}/chats`);
+
+                                                            }
+                                                        }
+                                                    }}
                                                     className="button_settings_style" style={{
                                                     height: 32,
                                                     alignItems: "center",
@@ -309,7 +329,7 @@ export default function UsersPage(params: DetailUsersProps) {
                                 </div>
                             </div>
                         </div>
-                        )
+                    )
                 }
             </div>
 
