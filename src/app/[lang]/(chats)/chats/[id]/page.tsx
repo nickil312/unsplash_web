@@ -9,6 +9,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/app/globalRedux/store";
 import OldChatMessages from "@/app/components/Chat/OldChatMessages";
 import {crearChatOldMessages} from "@/app/globalRedux/chats/slice";
+import {v4 as uuidv4} from 'uuid';
 
 type DetailChatsProps = {
     params: {
@@ -23,11 +24,15 @@ export type Message = {
     avatarUrl: string
     room_id: string
     type: 'recv' | 'self'
+    edit: boolean
+    id: string
+    deleted: boolean
 }
 export default function ChatsDetail(params: DetailChatsProps) {
     const id = params.params.id;
     const [messages, setMessage] = useState<Array<Message>>([])
     const textarea = useRef<HTMLTextAreaElement>(null)
+
     const {conn} = useContext(WebsocketContext)
     const [users, setUsers] = useState<Array<{ fullname: string, _id: string }>>([])
     // const { user } = useContext(AuthContext)
@@ -36,8 +41,13 @@ export default function ChatsDetail(params: DetailChatsProps) {
     const lang = pathname.split('/')[1];
     // const messagesEndRef = useRef<HTMLDivElement>(null); // Создаем ref для конца списка сообщений
     const dispatch = useDispatch<AppDispatch>();
-
     const router = useRouter()
+
+
+    const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
+    const [editingMessageContent, setEditingMessageContent] = useState("");
+    const [deleteId, setDeleteId] = useState<string | null>(null);
+
 
     useEffect(() => {
         if (conn === null) {
@@ -73,7 +83,7 @@ export default function ChatsDetail(params: DetailChatsProps) {
 
         conn.onmessage = (message) => {
             const m: Message = JSON.parse(message.data);
-
+            console.log("m ___________ ", m)
             // Убедитесь, что fullname присутствует в сообщении
             if (m.content === 'A new user has joined the room') {
                 setUsers((prevUsers) => [...prevUsers, {fullname: m.fullname, _id: m._id}]);
@@ -91,7 +101,20 @@ export default function ChatsDetail(params: DetailChatsProps) {
                 const date = new Date();
                 m.createdAt = date.toISOString();
             }
-            setMessage((prevMessages) => [...prevMessages, m]);
+            if (m.deleted) {
+                setMessage((prevMessages) =>
+                    prevMessages.filter((msg) => msg.id !== m.id) // Удаляем сообщение из состояния
+                );
+            } else if (m.edit) {
+                setMessage((prevMessages) =>
+                    prevMessages.map((msg) =>
+                        msg.id === m.id ? {...msg, content: m.content} : msg
+                    )
+                );
+            } else {
+                setMessage((prevMessages) => [...prevMessages, m]);
+            }
+            // setMessage((prevMessages) => [...prevMessages, m]);
         };
 
         conn.onclose = () => {
@@ -117,12 +140,96 @@ export default function ChatsDetail(params: DetailChatsProps) {
             return
         }
 
+//тут придется id генерить
+        const messageContent = textarea.current.value;
+        if (editingMessageId === null) {
 
-        conn.send(textarea.current.value)
+            const messageId = uuidv4().substring(0, 24);
+            const message = {
+                content: messageContent,
+                id: messageId, // Use a unique ID for new messages
+                edit: false, // Set the edit flag if editing
+                deleted: false,
+            };
+
+            // Send the message through the WebSocket connection
+            conn.send(JSON.stringify(message));
+        } else {
+            const message = {
+                content: messageContent,
+                id: editingMessageId, // Use a unique ID for new messages
+                edit: true, // Set the edit flag if editing
+                deleted: false
+            };
+            conn.send(JSON.stringify(message));
+
+        }
+        // conn.send(textarea.current.value)
 
 
         textarea.current.value = ''
+        setEditingMessageId(null); // Reset editing state after sending
+        setEditingMessageContent("");
     }
+    // const sendMessage = () => {
+    //     if (!textarea.current?.value) return;
+    //     if (conn === null) {
+    //         router.push('/');
+    //         return;
+    //     }
+    //
+    //     const messageContent = textarea.current.value;
+    //     if(data !== null){
+    //
+    //     const message = {
+    //         content: messageContent,
+    //         room_id: id,
+    //         id: editingMessageId , // Use a unique ID for new messages
+    //         edit: !!editingMessageId, // Set the edit flag if editing
+    //     };
+    //
+    //     // Send the message through the WebSocket connection
+    //     conn.send(JSON.stringify(message));
+    //
+    //     // Reset the textarea and editing state
+    //     textarea.current.value = '';
+    //     setEditingMessageId(null); // Reset editing state after sending
+    //     setEditingMessageContent(""); // Clear the editing message content
+    //     }
+    // };
+
+
+    const editMessage = (message) => {
+        console.log("edit button")
+        if (textarea.current !== null) {
+            console.log("edit button done")
+
+            setEditingMessageId(message.id);
+            setEditingMessageContent(message.content);
+
+            textarea.current.value = message.content; // Заполняем текстовое поле содержимым сообщения
+        }
+    };
+    const deleteMessage = (id:string) => {
+        console.log("delete button")
+        if (conn === null) {
+            router.push('/')
+            return
+        }
+        console.log("deleted mess _______ id", id)
+        setDeleteId(id);
+        // if(deleteId !== null){
+            const message = {
+                id: id, // Use a unique ID for new messages
+                deleted: true,
+                content: "deleted message",
+                edit: false, // Set the edit flag if editing
+            };
+            conn.send(JSON.stringify(message));
+
+        // }
+    }
+
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
@@ -135,11 +242,12 @@ export default function ChatsDetail(params: DetailChatsProps) {
     return (
 
         <div className='flex flex-col w-full '> {/* Установите высоту на 100% экрана */}
-                <div className='p-4 md:mx-6 pb-14 pt-8 '> {/* Используйте flex-grow для заполнения оставшегося пространства */}
-                <OldChatMessages lang={lang} id={id}/>
+            <div
+                className='p-4 md:mx-6 pb-14 pt-8 '> {/* Используйте flex-grow для заполнения оставшегося пространства */}
+                <OldChatMessages lang={lang} id={id} onEdit={editMessage} onDelete={deleteMessage}/>
 
                 {/*<div className='p-4 md:mx-6 mb-14'>*/}
-                <ChatBody data={messages} lang={lang} api_url={api_url} roomId={id}/>
+                <ChatBody data={messages} lang={lang} api_url={api_url} roomId={id} onEdit={editMessage} onDelete={deleteMessage}/>
                 {/*<div ref={messagesEndRef} /> /!* Элемент для прокрутки *!/*/}
 
             </div>
@@ -155,11 +263,14 @@ export default function ChatsDetail(params: DetailChatsProps) {
               />
                     </div>
                     <div className='flex items-center'>
-                        <button
-                            className='p-2 rounded-md bg-blue text-white'
-                            onClick={sendMessage}
-                        >
-                            Send
+                        {/*<button*/}
+                        {/*    className='p-2 rounded-md bg-blue text-white'*/}
+                        {/*    onClick={sendMessage}*/}
+                        {/*>*/}
+                        {/*    Send*/}
+                        {/*</button>*/}
+                        <button className="p-2 rounded-md bg-blue text-white" onClick={sendMessage}>
+                            {editingMessageId ? "Update" : "Send"}
                         </button>
                     </div>
                 </div>

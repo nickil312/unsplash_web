@@ -38,6 +38,7 @@ export type Messages = {
     roomId:string,
     _id:string,
     createdAt:string,
+    edit:boolean
 }
 export type ChatChangeImageReq = {
     chat_image:string,

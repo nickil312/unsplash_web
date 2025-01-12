@@ -8,8 +8,9 @@ import {Messages} from "@/app/globalRedux/chats/types";
 import MessageCard from "@/app/components/Chat/MessageCard";
 import {Status} from "@/app/globalRedux/posts/types";
 import {crearChatOldMessages} from "@/app/globalRedux/chats/slice";
+import {Message} from "@/app/[lang]/(chats)/chats/[id]/page";
 
-export default function OldChatMessages({lang, id}: { lang: string, id: string }) {
+export default function OldChatMessages({lang, id,onEdit, onDelete}: { lang: string, id: string,onEdit: (message: Message) => void,onDelete: (id: string) => void  }) {
     const dispatch = useDispatch<AppDispatch>();
     const {items, status} = useSelector((state: RootState) => state.chats.chat_old_Messages);
     const {api_url, data} = useSelector((state: RootState) => state.users);
@@ -187,33 +188,41 @@ export default function OldChatMessages({lang, id}: { lang: string, id: string }
                     if (data !== null && message._id === data._id) {
                         return (
                             <MessageCard
-                                key={message._id} // Добавьте уникальный ключ для каждого элемента
+                                key={message.id} // Добавьте уникальный ключ для каждого элемента
                                 id={message.id}
                                 _id={message._id}
                                 lang={lang}
                                 self={true}
+                                edit={message.edit}
                                 content={message.content}
                                 fullname={message.fullname}
                                 createdAt={message.createdAt}
                                 avatarUrl={message.avatarUrl}
                                 roomId={message.roomId}
                                 api_url={api_url}
+                                // @ts-ignore
+                                onEdit={() => onEdit(message)}
+                                onDelete={() => onDelete(message.id)}
                             />
                         );
                     } else {
                         return (
                             <MessageCard
-                                key={message._id} // Добавьте уникальный ключ для каждого элемента
+                                key={message.id} // Добавьте уникальный ключ для каждого элемента
                                 id={message.id}
                                 _id={message._id}
                                 lang={lang}
                                 self={false}
+                                edit={message.edit}
                                 content={message.content}
                                 fullname={message.fullname}
                                 createdAt={message.createdAt}
                                 avatarUrl={message.avatarUrl}
                                 roomId={message.roomId}
                                 api_url={api_url}
+                                // @ts-ignore
+                                onEdit={() => onEdit(message)}
+                                onDelete={() => onDelete(message.id)}
                             />
                         );
                     }
