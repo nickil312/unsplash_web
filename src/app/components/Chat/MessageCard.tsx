@@ -10,8 +10,7 @@ import {
     Popover,
     PopoverTrigger
 } from "@nextui-org/react";
-import {Button} from "@nextui-org/button";
-import {Input} from "@nextui-org/input";
+
 
 type MessageCardProps = Messages & {
     self: boolean;
@@ -39,24 +38,53 @@ export default function MessageCard({
 
             <Popover showArrow offset={10} placement="bottom-end">
                 <PopoverTrigger>
-                    <div className={'flex flex-row mt-2 w-full items-end justify-end'}>
+                    {
+                        edit ? (
+                            <div className={'flex flex-col mt-2 w-full items-end justify-end'}>
 
-                        <p>
-                            {content}
-                        </p>
-                        {edit &&
-                            <p className="text-gray-500">(changed)</p>} {/* Отображаем "(changed)" если edit true */}
+                                <p>
+                                    {content}
+                                </p>
+                                <div className="flex flex-row gap-0.5 mt-1 items-end justify-end">
+
+                                {/* Отображаем "(changed)" если edit true */}
+                                <div className='text-xs text-gray-500'>
+                                    {edit ? "edited" : <></>}
+                                </div>
+
+                                <div className='text-xs ml-2'>{new Intl.DateTimeFormat(`${lang}`, {
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                }).format(new Date(createdAt))}</div>
+                                </div>
+                                {/* Кнопка редактирования для сообщений от себя */}
+                                {/*<button onClick={onEdit} className="ml-2 text-blue-500">Edit</button>*/}
 
 
-                        <div className='text-xs ml-2'>{new Intl.DateTimeFormat(`${lang}`, {
-                            hour: '2-digit',
-                            minute: '2-digit'
-                        }).format(new Date(createdAt))}</div>
-                        {/* Кнопка редактирования для сообщений от себя */}
-                        {/*<button onClick={onEdit} className="ml-2 text-blue-500">Edit</button>*/}
+                            </div>
+                        ) : (
+                            <div className={'flex flex-row mt-2 w-full items-end justify-end'}>
+
+                                <p>
+                                    {content}
+                                </p>
+                                {/* Отображаем "(changed)" если edit true */}
+                                <div className='text-xs text-gray-500'>
+                                    {edit ? "edited" : <></>}
+                                </div>
+
+                                <div className='text-xs ml-2'>{new Intl.DateTimeFormat(`${lang}`, {
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                }).format(new Date(createdAt))}</div>
+                                {/* Кнопка редактирования для сообщений от себя */}
+                                {/*<button onClick={onEdit} className="ml-2 text-blue-500">Edit</button>*/}
 
 
-                    </div>
+                            </div>
+                        )
+                    }
+
                 </PopoverTrigger>
                 <PopoverContent className="w-fit">
                     <div className="px-1 py-2 w-full flex flex-col justify-end ">
@@ -87,8 +115,10 @@ export default function MessageCard({
                         <p>
                             {content}
                         </p>
-
-                        <div className='text-xs ml-2'>{new Intl.DateTimeFormat(`${lang}`, {
+                        <div className='ml-1 text-xs text-gray-500'>
+                            {edit ? "edited" : <></>}
+                        </div>
+                        <div className='text-xs ml-1'>{new Intl.DateTimeFormat(`${lang}`, {
                             hour: '2-digit',
                             minute: '2-digit'
                         }).format(new Date(createdAt))}</div>
