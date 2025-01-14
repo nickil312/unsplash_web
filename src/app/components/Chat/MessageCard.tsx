@@ -48,9 +48,9 @@ export default function MessageCard({
                                 <div className="flex flex-row gap-0.5 mt-1 items-end justify-end">
 
                                 {/* Отображаем "(changed)" если edit true */}
-                                <div className='text-xs text-gray-500'>
-                                    {edit ? "edited" : <></>}
-                                </div>
+                                <p className='text-xs text-gray-500'>
+                                    {lang === "en" ? <>edited</> : <>изменено</>}
+                                </p>
 
                                 <div className='text-xs ml-2'>{new Intl.DateTimeFormat(`${lang}`, {
                                     hour: '2-digit',
@@ -63,15 +63,12 @@ export default function MessageCard({
 
                             </div>
                         ) : (
-                            <div className={'flex flex-row mt-2 w-full items-end justify-end'}>
+                            <div className={'flex flex-col mt-2 w-full items-end justify-end'}>
 
                                 <p>
                                     {content}
                                 </p>
-                                {/* Отображаем "(changed)" если edit true */}
-                                <div className='text-xs text-gray-500'>
-                                    {edit ? "edited" : <></>}
-                                </div>
+
 
                                 <div className='text-xs ml-2'>{new Intl.DateTimeFormat(`${lang}`, {
                                     hour: '2-digit',
@@ -99,32 +96,40 @@ export default function MessageCard({
     } else {
 
         return (
-            <div className={'mt-2 flex flex-row '}>
-                <Link href={`/${lang}/${_id}`}>
+            <div className={'mt-2 flex flex-row w-full'}>
 
-                    <img className="rounded-full w-8 h-8 "
+                {/*<Link href={`/${lang}/${_id}`}>*/}
+                    <img className="rounded-full w-8 h-8 shrink-0"
                          src={`${api_url}/${avatarUrl}`}
                          alt="user photo"/>
-                </Link>
-                <div className="flex flex-col ml-2">
+                {/*</Link>*/}
+                <div className="flex flex-col ml-2 w-fit">
 
-                    <div className='text-sm'>{fullname}</div>
+                    <p className='text-sm'>{fullname}</p>
                     {/*<div className='text-sm'>{_id} - id</div>*/}
-                    <div className="flex flex-row mt-2 items-end ">
+                    <div className="flex flex-row mt-1 items-end ">
 
-                        <p>
+                        <p className="flex  ">
                             {content}
                         </p>
-                        <div className='ml-1 text-xs text-gray-500'>
-                            {edit ? "edited" : <></>}
-                        </div>
-                        <div className='text-xs ml-1'>{new Intl.DateTimeFormat(`${lang}`, {
-                            hour: '2-digit',
-                            minute: '2-digit'
-                        }).format(new Date(createdAt))}</div>
+
                         {/* Кнопка редактирования для сообщений от других пользователей */}
                         {/*<button onClick={onEdit} className="ml-2 text-blue-500">Edit</button>*/}
 
+                    </div>
+                    <div className="flex flex-row">
+                        {
+                            edit && (
+                        <div className='text-xs text-gray-500 mr-1'>
+                            {lang === "en" ? <>edited</> : <>изменено</>}
+                        </div>
+
+                            )
+                        }
+                        <div className='text-xs '>{new Intl.DateTimeFormat(`${lang}`, {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        }).format(new Date(createdAt))}</div>
                     </div>
                 </div>
             </div>

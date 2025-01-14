@@ -8,6 +8,7 @@ import PostsLoading from "@/app/components/__Loading/PostsLoading";
 import {usePathname, useRouter} from "next/navigation";
 import {WebsocketContext} from "@/app/websocket_provider";
 import {crearChatOldMessages, saveChat_info} from "@/app/globalRedux/chats/slice";
+import {truncateText} from "@/app/components/Products/func/truncateText";
 
 export default function ChatsDetail() {
     const dispatch = useDispatch<AppDispatch>();
@@ -82,7 +83,7 @@ export default function ChatsDetail() {
                                 <div className="border-b border-76 w-4/6">
                                     <div className="flex items-center justify-start w-full">
 
-                                        <p className="font-bold w-full">{post.chatName}</p>
+                                        <p className="font-bold w-fit shrink-0">{truncateText(`${post.chatName}`, 24)}</p>
                                         <div className="flex items-center justify-end gap-2 w-full">
 
 
@@ -138,7 +139,7 @@ export default function ChatsDetail() {
                                                         // src="https://images.unsplash.com/profile-1709797368653-c9a3d3c2bf26?fm=jpg&amp;q=60&amp;w=3000&amp;ixlib=rb-4.0.3&amp;crop=faces&amp;fit=crop&amp;h=32"
                                                          src={`${api_url}/${post.avatarUrl}`}
                                                          alt="user photo"/>
-                                                    <p className="text-sm md:ml-2">{post.fullName}</p>
+                                                    <p className="text-sm md:ml-2">{truncateText(`${post.fullName}`, 15)}</p>
                                                 </>
                                             )
                                         }
@@ -148,7 +149,7 @@ export default function ChatsDetail() {
                                             (post.msg !== "" && post.msgCrt !== "" && post.msgUsId !== "") && (
                                                 <>
 
-                                                    <p className="text-sm">{post.msg}</p>
+                                                    <p className="text-sm">{truncateText(`${post.msg}`, 22)}</p>
                                                     <p className="text-sm">{(() => {
                                                         const messageDate = new Date(post.msgCrt);
                                                         const today = new Date();
