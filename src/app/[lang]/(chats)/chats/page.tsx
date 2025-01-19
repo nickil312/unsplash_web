@@ -36,6 +36,18 @@ export default function ChatsDetail() {
             const ws = new WebSocket(
                 `ws://localhost:8080/ws/joinRoom/${roomId}?userId=${data._id}&username=${data.fullname}&avatarUrl=${data.avatarurl}`
             )
+            // ws.onopen = () =>{
+            //     console.log("Connection opened");
+            //
+            // }
+            // ws.onclose = () => {
+            //     console.log("Connection closed");
+            //     setTimeout(() => joinRoom(roomId), 5000);
+            // };
+            //
+            // ws.onerror = (error) => {
+            //     console.error("WebSocket error observed:", error);
+            // };
             if (ws.OPEN) {
                 setConn(ws)
                 // dispatch(saveChat_info({
