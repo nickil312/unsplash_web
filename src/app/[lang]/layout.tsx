@@ -16,6 +16,7 @@ import {NextIntlClientProvider} from "next-intl";
 import {i18n, Locale} from "@/i18n.config";
 import {NextUIProviders} from "@/app/NextUiProvider";
 import Websocket_provider from "@/app/websocket_provider";
+import {register} from "@/app/instrumentation";
 
 
 export const metadata: Metadata = {

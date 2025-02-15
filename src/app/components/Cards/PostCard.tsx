@@ -54,6 +54,7 @@ const PostCard: React.FC<PhotoCardProps> = ({
 
     const handleToggleLike = () => {
         if (data !== null) {
+            console.log("liked/disliked",liked,_id)
             const newLikedState = LikeDisChange({likeValue: liked, _id: _id});
             if (newLikedState !== undefined) {
                 setLiked(newLikedState);

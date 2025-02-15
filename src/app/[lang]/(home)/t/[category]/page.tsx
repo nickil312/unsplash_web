@@ -45,6 +45,14 @@ export default function CategoryPage(params: DetailPostInfoProps) {
                 limit: searchParams.get("countview"),
                 sort: searchParams.get("sort")
             }))
+            // globalThis.metrics?.categoryPopularity.inc({
+            //     category_name:"illustrations",
+            //     date:Date.now()
+            // });
+            // globalThis.metrics?.userSignups.inc({
+            //     plan_type: "free",
+            //     referral_source: "direct"
+            // });
         } else if (pathname.startsWith('/ru/t/unsplash_plus') || pathname.startsWith('/en/t/unsplash_plus')) {
             dispatch(fetchAllPostsWithCategory({
                 posttype: '',
@@ -57,6 +65,10 @@ export default function CategoryPage(params: DetailPostInfoProps) {
                 limit: searchParams.get("countview"),
                 sort: searchParams.get("sort")
             }))
+            // globalThis.metrics?.categoryPopularity.inc({
+            //     category_name:"unsplash_plus",
+            //     date:Date.now()
+            // });
         } else {
             // console.log("wallpapers")
             dispatch(fetchAllPostsWithCategory({
@@ -70,6 +82,10 @@ export default function CategoryPage(params: DetailPostInfoProps) {
                 limit: searchParams.get("countview"),
                 sort: searchParams.get("sort")
             }))
+            // globalThis.metrics?.categoryPopularity.inc({
+            //     category_name:params.params.category.charAt(0).toUpperCase() + params.params.category.slice(1),
+            //     date:Date.now()
+            // });
         }
         setIsLoading(false);
     }
